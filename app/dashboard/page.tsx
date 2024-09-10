@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import Head from "next/head";
-import { Chain, SmartWalletSDK } from "@crossmint/client-sdk-smart-wallet";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -34,7 +33,7 @@ export default function DashboardPage() {
       router.push("/");
     }
   }, [ready, authenticated, router]);
-
+  
   const numAccounts = user?.linkedAccounts?.length || 0;
   const canRemoveAccount = numAccounts > 1;
 
@@ -45,31 +44,6 @@ export default function DashboardPage() {
   const googleSubject = user?.google?.subject || null;
   const twitterSubject = user?.twitter?.subject || null;
   const discordSubject = user?.discord?.subject || null;
-
-  const createSmartWallet = async () => {
-		console.log("smart wallet!");
-
-		const jwt = await getAccessToken().then((jwt) => jwt ?? undefined);
-
-		if (!jwt) {
-			login();
-			return getAccessToken().then((jwt) => {
-				if (jwt == null) {
-					throw new Error("Unable to login with Privy");
-				}
-
-				return jwt;
-			});
-		}
-
-		const xm = SmartWalletSDK.init({
-			clientApiKey: process.env.NEXT_PUBLIC_CROSSMINT_API_KEY || "",
-		});
-
-		const wallet = await xm.getOrCreateWallet({ jwt }, Chain.POLYGON_AMOY);
-
-		console.log("created:", wallet);
-	};
 
   return (
     <>
@@ -207,13 +181,6 @@ export default function DashboardPage() {
                   Connect phone
                 </button>
               )}
-
-              <button
-								onClick={createSmartWallet}
-								className="text-sm bg-green-600 hover:bg-green-700 py-2 px-4 rounded-md text-white border-none"
-							>
-								Create Crossmint Smart Wallet
-							</button>
             </div>
 
             <p className="mt-6 font-bold uppercase text-sm text-gray-600">

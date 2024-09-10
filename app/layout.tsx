@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PrivyProviderWrapper from "../components/privy-provider-wrapper";
+import CrossmintWrapper from "./crossmint/CrossmintWrapper";
 import '../styles/globals.css';
 
 export default function RootLayout({
@@ -40,7 +41,9 @@ export default function RootLayout({
       <link rel="manifest" href="/favicons/manifest.json" />
       <body>
         <PrivyProviderWrapper>
+          <CrossmintWrapper>
             {children}
+          </CrossmintWrapper>
         </PrivyProviderWrapper>
       </body>
     </html>
